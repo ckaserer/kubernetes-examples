@@ -1,0 +1,23 @@
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ .Release.Name }}-headless
+  labels:
+    app: "hello"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    helm.sh/release: "{{ .Release.Name }}"
+    helm.sh/revision: "{{ .Release.Revision }}"
+spec:
+  ports:
+    - name: 8080-tcp
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: "hello"
+    helm.sh/release: "{{ .Release.Name }}"
+  clusterIP: None
+status:
+  loadBalancer: {}  
+...

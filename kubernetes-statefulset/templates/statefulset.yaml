@@ -1,0 +1,42 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ .Release.Name }}
+  labels:
+    app: "hello"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    helm.sh/release: "{{ .Release.Name }}"
+    helm.sh/revision: "{{ .Release.Revision }}"
+spec:
+  serviceName: {{ .Release.Name }}-headless
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: "hello"
+  serviceName: {{ .Release.Name }}-headless
+  template:
+    metadata:
+      labels:
+        app: "hello"
+        helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+        helm.sh/release: "{{ .Release.Name }}"
+        helm.sh/revision: "{{ .Release.Revision }}"
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: {{ .Release.Name }}-anyuid
+      containers:
+        - name: hello
+          image: {{ .Values.statefulset.image }}
+          ports:
+            - containerPort: 8080
+              protocol: TCP
+          resources:
+            requests:
+              cpu: {{ .Values.statefulset.resources.requests.cpu }}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      securityContext: {}
+...

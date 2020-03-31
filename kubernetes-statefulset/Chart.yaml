@@ -1,0 +1,7 @@
+---
+apiVersion: v2
+name: example-ocp-statefulset
+description: A Helm chart for OpenShift to provide an example app as stateful set.
+type: application
+version: 0.1.0
+...

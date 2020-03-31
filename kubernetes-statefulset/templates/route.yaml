@@ -1,0 +1,22 @@
+{{- if .Values.route.create -}}
+---
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: {{ .Release.Name }}
+  annotations:
+    router.openshift.io/cookie_name: "{{ .Release.Name }}-{{ .Release.Revision }}"
+  labels:
+    app: "hello"
+    helm.sh/chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    helm.sh/release: "{{ .Release.Name }}"
+    helm.sh/revision: "{{ .Release.Revision }}"
+spec:
+  to:
+    kind: Service
+    name: {{ .Release.Name }}
+    weight: 100
+  port:
+    targetPort: 8080-tcp
+...
+{{- end -}}

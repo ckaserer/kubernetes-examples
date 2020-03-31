@@ -1,0 +1,28 @@
+---
+
+# OpenShift
+route:
+  create: false
+
+# Kubernetes
+ingress:
+  create: false
+  host: "hello-ckaserer.apps.p.aws.ocp.gepardec.com"
+
+statefulset:
+  image: docker.io/nginxdemos/nginx-hello:plain-text
+  replicas: 3
+  resources:
+    requests:
+      cpu: 1m
+
+scc:
+  create: false
+
+horizontalPodAutoscaler:
+  create: false
+  minReplicas: 3
+  maxReplicas: 6
+  targetCPUUtilizationPercentage: 50
+
+...
